@@ -1,8 +1,10 @@
+import sys
+input = sys.stdin.readline
 
-word = input()
-croatia_alphabets = ['c=','c-','dz=','d-','lj','nj','s=','z=']
+word = input().strip()
+croatia_alphabet = ["c=","c-","dz=","d-","lj","nj","s=","z="]
 
-for c in croatia_alphabets:
-    word = word.replace(c,'*')
-    
+for c in croatia_alphabet:
+        word = word.replace(c, "*")
+
 print(len(word))
