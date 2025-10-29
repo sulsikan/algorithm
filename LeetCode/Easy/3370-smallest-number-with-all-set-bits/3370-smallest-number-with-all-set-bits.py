@@ -3,6 +3,5 @@ class Solution:
         binary = 1
         cnt = 0
         while n >= binary:
-            binary *= 2
-            cnt += 1      
+            binary *= 2    
         return binary -1
