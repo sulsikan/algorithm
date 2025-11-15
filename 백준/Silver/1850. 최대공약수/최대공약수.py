@@ -7,5 +7,5 @@ def gcd(x, y):
         return x
     return gcd(y, x % y)
 
-for i in range(gcd(a, b)):
-    print(1, end='')
+gcd = gcd(a, b)
+print('1' * gcd)
