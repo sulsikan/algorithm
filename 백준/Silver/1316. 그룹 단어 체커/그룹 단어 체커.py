@@ -2,25 +2,15 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-res = 0
+group_words = [list(input().strip()) for _ in range(n)]
+prev_words = [[] for _ in range(n)]
+count = 0
+for i in range(n):
+    for idx, c in enumerate(group_words[i]):
+        if c in prev_words[i] and idx >= 1 and c != group_words[i][idx-1]:
 
-
-for _ in range(n):
-    word = list(input().strip())
-    saved = []
-    chk = 0
-    if len(word) == 1:
-        res += 1
-        continue
-
-    for w in range(len(word)):
-        if word[w] not in saved:
-            saved.append(word[w])
+            count += 1
+            break
         else:
-            if word[w] != word[w-1]:
-                chk = 1
-                
-            
-    if chk == 0 :
-        res += 1
-print(res)
+            prev_words[i].append(c)
+print(n-count)
