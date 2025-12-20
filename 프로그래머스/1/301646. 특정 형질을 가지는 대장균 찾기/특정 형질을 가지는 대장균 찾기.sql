@@ -1,3 +1,3 @@
--- 코드를 작성해주세요
-select COUNT(*) as count from ECOLI_DATA
-where genotype & 2 = 0 and genotype & 5 <> 0
+select count(*) as count
+from ecoli_data
+where genotype & b'0101' <> 0 and genotype & b'0010' = 0
