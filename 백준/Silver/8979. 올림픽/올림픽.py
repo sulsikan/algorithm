@@ -1,24 +1,21 @@
+import sys
+input = sys.stdin.readline
+
 # input
 n, k = map(int, input().split())
-medals = [list(map(int, input().split())) for _ in  range(n)]
+medals = [list(map(int, input().split())) for _ in range(n)]
 
-# rank 매기기
-medals.sort(key=lambda x : (x[1], x[2], x[3]), reverse = True)
+# 정렬
+medals.sort(key=lambda x: (x[1], x[2], x[3]), reverse=True)
 
-# 동점 국가 검사
-chk_medal = medals
-tie_cnt = 0
-prev_score = []
+# k 점수 찾기
 for nation, g, s, b in medals:
-    score = (g, s, b)
     if nation == k:
-        if score in prev_score:
-            tie_cnt += 1
-    prev_score.append(score)
+        k_score = (g, s, b)
+        break
 
-# k 국가 찾기
-idx = [medals[i][0] for i in range(n)].index(k)
-
-
-# 결과 반환
-print(idx - tie_cnt + 1)
+# k_score가 처음 나오는 위치가 순위
+for i, (nation, g, s, b) in enumerate(medals):
+    if (g, s, b) == k_score:
+        print(i + 1)
+        break
