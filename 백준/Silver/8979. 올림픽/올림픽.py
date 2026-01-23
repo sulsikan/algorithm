@@ -1,24 +1,24 @@
-import sys
-input = sys.stdin.readline
-
+# input
 n, k = map(int, input().split())
-rank_list = {}
-for _ in range(n):
-    nation, gold, silver, bronze = map(int, input().split())
-    rank_list[nation] = {"gold" : gold, "silver" : silver, "bronze":bronze}
+medals = [list(map(int, input().split())) for _ in  range(n)]
 
-sorted_rank = sorted(rank_list.items(), key=lambda x: (-x[1]["gold"], -x[1]["silver"], -x[1]["bronze"]))
+# rank 매기기
+medals.sort(key=lambda x : (x[1], x[2], x[3]), reverse = True)
 
-prev_rank = 0
-prev_score = None
-ranking = []
-for i, (n, m) in enumerate(sorted_rank):
-    score = (m["gold"], m["silver"], m["bronze"])
-    if score != prev_score:
-        prev_rank += 1
-        prev_score = score
-    ranking.append((n, prev_rank, m))
-
-for nation, rank, medal in ranking:
+# 동점 국가 검사
+chk_medal = medals
+tie_cnt = 0
+prev_score = []
+for nation, g, s, b in medals:
+    score = (g, s, b)
     if nation == k:
-        print(rank)
+        if score in prev_score:
+            tie_cnt += 1
+    prev_score.append(score)
+
+# k 국가 찾기
+idx = [medals[i][0] for i in range(n)].index(k)
+
+
+# 결과 반환
+print(idx - tie_cnt + 1)
