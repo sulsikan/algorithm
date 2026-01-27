@@ -1,33 +1,26 @@
 import sys
+from itertools import permutations
+
 input = sys.stdin.readline
+N = int(input())
+# 1
+num_list = list(permutations(range(1,10), 3))
 
-n = int(input())
-answer = []
-
-for num in range(123, 999):
-    num = str(num)
-    if '0' in num:
-        continue
-    if num[0] in num[1:] or num[1] in num[2:]:
-        continue
-    answer.append(num)
-
-for _ in range(n):
-    num, s, b = map(int, input().split())
-
-    nums = list(str(num))
+for _ in range(N):
+    # 2
+    chk, s, b = map(int, input().split())
+    chk = list(map(int, str(chk)))
     tmp = []
-
-    for chk in answer:
+    for num in num_list:
         cnt_s, cnt_b = 0, 0
         for i in range(3):
-            if nums[i] == chk[i]:
+            if num[i] == chk[i]:
                 cnt_s += 1
-            elif nums[i] != chk[i] and nums[i] in chk:
+                continue
+            if num[i] != chk[i] and chk[i] in num:
                 cnt_b += 1
-
         if cnt_s == s and cnt_b == b:
-            tmp.append(chk)
-    answer = tmp
+            tmp.append(num)
+    num_list = tmp
 
-print(len(answer))
+print(len(num_list))
