@@ -1,23 +1,16 @@
-import sys
-input = sys.stdin.readline
+k, n = map(int,input().split())
+lan_lines = [int(input()) for _ in range(k)]
 
-k, n = map(int, input().split())
-lanlines = [int(input()) for _ in range(k)]
-
-start = 1
-end = sum(lanlines) // n
-answer = 0
-
+start, end, answer = 1, max(lan_lines), 0
 while start <= end:
     mid = (start+end) // 2
-    lan_calc = 0
+    lan_cnt = 0
+    for lan in lan_lines:
+        lan_cnt += lan // mid
 
-    for lan in lanlines:
-        lan_calc += lan // mid
-
-    if lan_calc >= n:
-        answer = mid
+    if lan_cnt >= n:
         start = mid + 1
+        answer = mid
     else:
         end = mid - 1
 
