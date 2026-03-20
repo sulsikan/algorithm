@@ -1,6 +1,3 @@
-import sys
-input = sys.stdin.readline
-
 a,b = map(int,input().split())
 a_arr = set(map(int, input().split()))
 b_arr = set(map(int, input().split()))
