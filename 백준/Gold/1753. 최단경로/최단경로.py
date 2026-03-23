@@ -1,33 +1,33 @@
-
 import heapq
 import sys
 input = sys.stdin.readline
 
-V, E = map(int, input().split())
-k = int(input())
+V, E = map(int,input().split())
+K = int(input())
 
-graph = [[] for _ in range(V+1)]
+graph = [[] for _ in range(V + 1)]
 for _ in range(E):
     u, v, w = map(int, input().split())
     graph[u].append((v, w))
 
-INF = 10**18
-dist = [INF] * (V+1)
-dist[k] = 0
+INF = int(1e9)
+costs = [INF] * (V+1)
+queue = []
 
-pq = [(0, k)]  # (거리, 정점)
+heapq.heappush(queue, (0, K))
+costs[K] = 0
 
-while pq:
-    d, x = heapq.heappop(pq)
-    if d != dist[x]:  # 0 == 0
+while queue:
+    w, v = heapq.heappop(queue)
+    if costs[v] < w:
         continue
-    for nx, w in graph[x]:
-        nd = d + w
-        if nd < dist[nx]:
-            dist[nx] = nd
-            heapq.heappush(pq, (nd, nx))
+    for node, cost in graph[v]:
+        if costs[node] > w + cost :
+            costs[node] = w + cost
+            heapq.heappush(queue, (costs[node], node))
 
-out = []
 for i in range(1, V+1):
-    out.append("INF" if dist[i] == INF else str(dist[i]))
-print("\n".join(out))
+    if costs[i] != INF:
+        print(costs[i])
+    else:
+        print('INF')
