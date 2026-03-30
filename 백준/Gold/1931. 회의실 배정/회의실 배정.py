@@ -1,22 +1,12 @@
-import sys
+n = int(input())
+meeting_schedule = [list(map(int, input().split())) for _ in range(n)]
+meeting_schedule.sort(key=lambda x: (x[1], x[0]))
 
-def main():
-    N = int(sys.stdin.readline())
-    meetings = []
-    for _ in range(N):
-        s, e = map(int, sys.stdin.readline().split())
-        meetings.append((s,e))
+count = 0
+end_time = 0
+for start, end in meeting_schedule:
+    if start >= end_time:
+        count += 1
+        end_time = end
 
-    meetings.sort(key=lambda x: (x[1], x[0]))
-
-    end = 0
-    count = 0
-    for s, e in meetings:
-        if s >= end:
-            count += 1
-            end = e
-
-    print(count)
-
-if __name__ == "__main__":
-    main()
+print(count)
