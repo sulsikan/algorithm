@@ -1,32 +1,37 @@
+# bfs
+from collections import deque
 def solution(n, results):
     answer = 0
-    winner = [[] for _ in range(n+1)]
-    loser = [[] for _ in range(n+1)]
+    winner_graph = [[] for _ in range(n+1)]
+    loser_graph = [[] for _ in range(n+1)]
     
-    # 그래프 구성
     for w, l in results:
-        winner[w].append(l)
-        loser[l].append(w)
+        winner_graph[w].append(l)
+        loser_graph[l].append(w)
         
-    def dfs(graph, start, visited):
+    def bfs(graph, start):
+        visited = [False] * (n+1)
+        queue = deque([start])
         count = 0
         
-        for nxt in graph[start]:
-            if visited[nxt] == False:
-                visited[nxt] = True
-                count += 1
-                count += dfs(graph, nxt, visited)
-                
+        visited[start] = True
+    
+        while queue:
+            player = queue.popleft()
+
+            for nxt in graph[player]:
+                if not visited[nxt]:
+                    visited[nxt] = True
+                    queue.append(nxt)
+                    count += 1
         return count
     
-    for player in range(1, n+1):
-        visited = [False] * (n + 1)
-        win_cnt = dfs(winner, player, visited)
+    for p in range(1, n+1):
+        win_count = bfs(winner_graph, p)
         
-        visited = [False] * (n + 1)
-        lose_cnt = dfs(loser, player, visited)
+        lose_count = bfs(loser_graph, p)
         
-        if win_cnt + lose_cnt == n-1:
+        if win_count + lose_count == n-1:
             answer += 1
-        
+    
     return answer
