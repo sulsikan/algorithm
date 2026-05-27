@@ -1,29 +1,27 @@
 def solution(n, computers):
+
     graph = [[] for _ in range(n)]
     
     for i in range(n):
         for j in range(n):
-            if i != j and computers[i][j] == 1:
+            if computers[i][j] == 1:
                 graph[i].append(j)
                 
-    stack = [0]
-    visited = [False] * n 
+    def dfs(graph, node, visited):
+        for nxt in graph[node]:
+            if visited[nxt] == False:
+                visited[nxt] = True
+                dfs(graph, nxt, visited)
+                
+        return visited
+    
     answer = 0
+    visited = [False] * n
     
-    for node in range(n):
-        if visited[node] == False:
-            stack.append(node)
-        else:
-            continue
-            
-        while stack:
-            now = stack.pop()
-            for nxt in graph[now]:
-                if visited[nxt] == False:
-                    visited[nxt] = True
-                    stack.append(nxt)
-
-        answer += 1
-    
-    
+    for node_num in range(n):
+        if not visited[node_num]:
+            visited = dfs(graph, node_num, visited)
+            answer += 1
+        
     return answer
+        
