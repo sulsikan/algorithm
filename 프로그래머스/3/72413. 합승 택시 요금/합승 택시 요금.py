@@ -1,4 +1,5 @@
-# point : 시작지점 -> 거점 -> 목적지가 최단거리가 되는 "거점" 찾기
+# S를 기준으로 최단 경로
+# 미지의 수 K를 기준으로 최단경로
 # 다익스트라
 import heapq
 
@@ -6,31 +7,40 @@ def solution(n, s, a, b, fares):
     INF = 1e9
     
     graph = [[] for _ in range(n+1)]
-    
-    for v, u, c in fares:
-        graph[v].append((u, c))
+    for u, v, c in fares:
         graph[u].append((v, c))
+        graph[v].append((u, c))
         
     def dijkstra(start):
-        queue = [(0, start)]
+        hq = [(0, start)]
         distance = [INF] * (n+1)
         distance[start] = 0
-        
-        while queue:
-            cur_cost, cur_node = heapq.heappop(queue)
-            
+
+        while hq:
+            cur_cost, cur_node = heapq.heappop(hq)
+
             for nxt_node, cost in graph[cur_node]:
-                nxt_cost = cur_cost + cost
-                if nxt_cost < distance[nxt_node]:
+                nxt_cost = cost + cur_cost
+                if distance[nxt_node] > nxt_cost:
                     distance[nxt_node] = nxt_cost
-                    heapq.heappush(queue, (nxt_cost, nxt_node))
+                    heapq.heappush(hq, (nxt_cost, nxt_node))
                     
         return distance
     
-    distance_list = [0] + [dijkstra(i) for i in range(1, n+1)]
     
-    answer = INF
-    for i in range(1, n+1):
-        answer = min(answer, distance_list[s][i] + distance_list[i][a] + distance_list[i][b])
+    dist_list = [[] for _  in range(n+1)]
+    
+    for node in range(1, n+1):
+        dist_list[node] = dijkstra(node)
+        
+    answer = dist_list[s][a] + dist_list[s][b]
+    
+    for k in range(1, n+1):
+        if k == s:
+            continue
+        
+        new_cost = dist_list[s][k] + dist_list[k][a] + dist_list[k][b]
+        if new_cost < answer:
+            answer = new_cost
     
     return answer
