@@ -1,19 +1,18 @@
-# 모든 경우의 수 -> target인 것만 count
-
 def solution(numbers, target):
     answer = 0
-
-    def dfs(idx, total):
+    
+    def dfs(index, total):
         nonlocal answer
-
-        if idx == len(numbers):
+        
+        if index + 1 == len(numbers):
             if total == target:
                 answer += 1
             return
+        
+        dfs(index + 1, total + numbers[index + 1])
+        dfs(index + 1, total - numbers[index + 1])
 
-        dfs(idx + 1, total + numbers[idx])
-        dfs(idx + 1, total - numbers[idx])
-
-    dfs(0, 0)
-
+    dfs(0, numbers[0])
+    dfs(0, - numbers[0])
+        
     return answer
