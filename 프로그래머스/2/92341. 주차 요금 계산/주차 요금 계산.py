@@ -1,4 +1,5 @@
 from collections import defaultdict, deque
+
 import math
 
 def solution(fees, records):
@@ -7,8 +8,6 @@ def solution(fees, records):
     accrue_car = defaultdict(int)
     queue = []
     
-    # 차량 별 누적시간 기록
-    # 시간, 차량번호, 상태 / 시간 계산이 관건
     for row in records:
         t, n, s = row.split()
         min_t = int(t[0:2]) * 60 + int(t[3:])
