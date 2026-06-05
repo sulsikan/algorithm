@@ -1,21 +1,23 @@
+# 해시[uid] = 이름
+
 def solution(record):
-    users = dict()
     result = []
-    answer = []
+    users = dict()
     
     for sentence in record:
-        sentence_split = sentence.split()
+        if sentence[0] == 'L':
+            word, uid = sentence.split()
+            result.append((uid, "님이 나갔습니다."))
+        else:
+            word, uid, name = sentence.split()
+            users[uid] = name
         
-        # Enter, Change
-        if len(sentence_split) == 3:
-            users[sentence_split[1]] = sentence_split[2]
-            
-        result.append((sentence_split[0], sentence_split[1]))
-            
-    for word, uid in result:
-        if word == 'Enter':
-            answer.append(users[uid]+"님이 들어왔습니다.")
-        elif word == 'Leave':
-            answer.append(users[uid]+"님이 나갔습니다.")
-    
+            if word == 'Enter':
+                result.append((uid, "님이 들어왔습니다."))
+                
+        
+    answer = []
+    for u, s in result:
+        answer.append(users[u] + s)
+        
     return answer
