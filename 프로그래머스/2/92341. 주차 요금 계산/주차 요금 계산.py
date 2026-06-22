@@ -1,38 +1,38 @@
-from collections import defaultdict, deque
-
+from collections import defaultdict
 import math
 
 def solution(fees, records):
-    answer = []
     calc_list = dict()
-    accrue_car = defaultdict(int)
-    queue = []
+    accum_time = defaultdict(int)
+    in_car = set()
+    answer = []
     
     for row in records:
-        t, n, s = row.split()
-        min_t = int(t[0:2]) * 60 + int(t[3:])
-
-        if s == 'IN':
-            calc_list[n] = min_t
-            if n not in queue:
-                queue.append(n)
-                
-        else:
-            accrue_car[n] += min_t - calc_list[n]
-            calc_list[n] = -1
+        time, car_num, state = row.split()
+        min_time = int(time[0:2]) * 60 + int(time[3:])
         
-    # 가격표 계산
-    queue.sort()
-    
-    for car_num in queue:
-
-        if calc_list[car_num] >= 0:
-            accrue_car[car_num] += (23 * 60 + 59) - calc_list[car_num]
+        if state == 'IN':
+            calc_list[car_num] = min_time
+            in_car.add(car_num)
+        else:
+            accum_time[car_num] += min_time - calc_list[car_num]
+            calc_list[car_num] = -1
             
-        if accrue_car[car_num] < fees[0]:
+    sorted_car_list = sorted(in_car)
+            
+    for car_num in sorted_car_list:
+        if calc_list[car_num] >= 0:
+            accum_time[car_num] += (23 * 60 + 59) - calc_list[car_num]
+        
+        if accum_time[car_num] < fees[0]:
             answer.append(fees[1])
             continue
+            
+        answer.append(fees[1] + math.ceil((accum_time[car_num] - fees[0]) / fees[2]) * fees[3])
         
-        answer.append(fees[1] + math.ceil((accrue_car[car_num] - fees[0]) / fees[2]) * fees[3])
-
     return answer
+    
+        
+            
+            
+        
