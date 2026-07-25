@@ -2,12 +2,13 @@ from itertools import permutations
 
 def operation(num1, num2, op):
     if op == '+':
-        return str(int(num1) + int(num2))
+        return int(num1) + int(num2)
     if op == '-':
-        return str(int(num1) - int(num2))
+        return int(num1) - int(num2)
     if op == '*':
-        return str(int(num1) * int(num2))
+        return int(num1) * int(num2)
     
+
 def calculate(exp, op):
     array = []
     tmp = ''
@@ -31,7 +32,7 @@ def calculate(exp, op):
             else:
                 stack.append(tmp)
         array = stack
-        
+                
     return abs(int(array[0]))
 
 def solution(expression):
@@ -41,5 +42,5 @@ def solution(expression):
     
     for op_list in op:
         result.append(calculate(expression, op_list))
-        
+    
     return max(result)
