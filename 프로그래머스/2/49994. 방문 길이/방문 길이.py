@@ -1,33 +1,27 @@
 def solution(dirs):
+    visited = set()
+    x, y = 0, 0
     answer = 0
-    path = [[] for _ in range(len(dirs)+1)]
-    path[0] = [5, 5]
-    start = [5, 5]
-    visited = []
     
-    for i in range(0, len(dirs)):
+    move = {
+        "U" : (0, 1),
+        "D" : (0, -1),
+        "R" : (1, 0),
+        "L" : (-1, 0)
+    }
+    
+    for d in dirs:
+        nxt_x = x + move[d][0]
+        nxt_y = y + move[d][1]
         
-        if dirs[i] == 'U':
-            path[i+1] = [path[i][0], path[i][1]+1]       
-        elif dirs[i] == 'D':
-            path[i+1] = [path[i][0], path[i][1]-1]
-        elif dirs[i] == 'R':
-            path[i+1] = [path[i][0]+1, path[i][1]]
-        else:
-            path[i+1] = [path[i][0]-1, path[i][1]]
-            
-        if 0 <= path[i+1][0] < 11 and 0 <= path[i+1][1] < 11:
-            chk_p = [start[0], start[1], path[i+1][0], path[i+1][1]]
-            
-            if chk_p not in visited:
-                print(chk_p)
-                visited.append(chk_p)
-                visited.append([path[i+1][0], path[i+1][1], start[0], start[1]])
+        if -5 <= nxt_x <= 5 and -5 <= nxt_y <= 5:
+            if (x, y, nxt_x, nxt_y) not in visited:
+                visited.add((x, y, nxt_x, nxt_y))
+                visited.add((nxt_x, nxt_y, x, y))
                 answer += 1
-        
-            start = [path[i+1][0], path[i+1][1]]
             
-        else:
-            path[i+1] = path[i]
-    
+            x, y = nxt_x, nxt_y
+            
     return answer
+        
+        
