@@ -1,32 +1,31 @@
 import sys
 input = sys.stdin.readline
 
-N = int(input())
-map = [list(map(int, input().strip())) for _ in  range(N)]
-#chk = [[False] * N for _ in range(N)]
-each = 0
+n = int(input())
+graph = [list(map(int, input().strip())) for _ in range(n)]
 
-def dfs(y, x):
-    # 종료 조건
-    if y < 0 or x < 0 or y >= N or x >= N or map[y][x]!=1: return
-    global each
-    each += 1
-    # 동서남북 탐색
-    map[y][x] = 0
-    dfs(y+1, x)
-    dfs(y - 1, x)
-    dfs(y, x+1)
-    dfs(y, x-1)
+visited = [[False] * n for _ in range(n)]
+result = []
+stack = []
+    
+for j in range(n):
+    for i in range(n):
+        if graph[i][j] == 1 and not visited[i][j]:
+            visited[i][j] = True
+            stack.append((i, j))
+            cnt = 1
 
-# 탐색 시작
-ans = []
-for j in range(N):
-    for i in range(N):
-        if map[j][i] == 1:
-            each = 0
-            dfs(j, i)
-            ans.append(each)
-ans.sort()
-print(len(ans))
-for i in ans:
+            while stack:
+                x, y = stack.pop()
+                for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < n and 0 <= ny < n and graph[nx][ny] == 1 and not visited[nx][ny]:
+                        visited[nx][ny] = True
+                        stack.append((nx, ny))
+                        cnt += 1
+
+            result.append(cnt)
+
+print(len(result))
+for i in sorted(result):
     print(i)
